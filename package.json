@@ -1,0 +1,15 @@
+{
+  "name": "cake",
+  "version": "1.0.0",
+  "description": "v-bind: 绑定属性【class、style、value】",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "uview-ui": "^2.0.35"
+  }
+}
