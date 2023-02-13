@@ -64,7 +64,30 @@
 			handleGoTop(){
 				this.topItem = 'top'
 			}
-		}
+		},
+		// 发送请求
+		onLoad() {
+			// 方法1：直接用
+			// uni.request({
+			// 	url:"https://df4xp4bb.lc-cn-n1-shared.com/1.1/classes/classify",
+			// 	header:{
+			// 		"X-LC-Id": "Df4Xp4BbJGNxEGzWB2CDaLk4-gzGzoHsz",
+			// 		"X-LC-Key": "cvSFZiRR3l4NyPkaMQw8PcdO",
+			// 		"Content-Type": "application/json"
+			// 	},
+			// 	success: (res) => {
+			// 		console.log(res);
+			// 	}
+			// })
+			// 方法2：使用封装的方法
+			// $http('/classify').then(res=>{
+			// 	console.log(res);
+			// })
+			// 方法3：使用封装在原型的方法
+			this.$get('/classify').then(res=>{
+				console.log(res);
+			})
+		},
 	}
 </script>
 
