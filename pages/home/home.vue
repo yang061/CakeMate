@@ -8,9 +8,9 @@
 			<navCustom></navCustom>
 			<!-- 轮播图 -->
 			<swiper :indicator-dots="true" :autoplay="true" indicatorActiveColor="#ffe32a" class="banner">
-				<swiper-item v-for="(item,index) in 3" :key="index">
-					<view class="swiper-item">
-						<image src="../../static/img/banner.jpg" mode=""></image>
+				<swiper-item v-for="(item,index) in banner" :key="item.objectId">
+					<view class="swiper-item" @click="handleBanner(item.link)">
+						<image :src="item.img" mode=""></image>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -48,6 +48,8 @@
 				isShow:false,
 				// 返回顶部的标记点
 				topItem:'',
+				// 存储banner数据
+				banner:[]
 			};
 		},
 		methods:{
@@ -63,6 +65,12 @@
 			// 返回顶部点击事件
 			handleGoTop(){
 				this.topItem = 'top'
+			},
+			//banner点击事件,跳转详情页
+			handleBanner(link){
+				uni.navigateTo({
+					url:`/pages/home/banner-ad?link=${link}`
+				})
 			}
 		},
 		// 发送请求
@@ -84,8 +92,12 @@
 			// 	console.log(res);
 			// })
 			// 方法3：使用封装在原型的方法
-			this.$get('/classify').then(res=>{
-				console.log(res);
+			// this.$get('/classify').then(res=>{
+			// 	console.log(res);
+			// })
+			// 获取banner
+			this.$get('/classes/banner').then((res)=>{			
+				this.banner = res.results;
 			})
 		},
 	}

@@ -56,6 +56,24 @@
             }
             
         }
+        ,{
+            "path" : "pages/home/banner-ad",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/collect-data/collect-data",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
 		"color": "#d8d8d8",
@@ -77,6 +95,10 @@
 			},{
 				"text": "主页",
 				"pagePath": "pages/home/home"
+			},
+			{
+				"text": "转录",
+				"pagePath": "pages/collect-data/collect-data"
 			}
 		]
 	},

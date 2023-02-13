@@ -12,7 +12,7 @@ uni.$u.config.unit = 'rpx'
 // Vue.prototype.$get=$get
 // Vue.prototype.$post=$post
 // Vue.prototype.$http=$http
-//另一种写法,把@/utils/request.js中的使用方法都引入到request里去
+//另一种写法,把@/utils/request.js中的使用方法都引入到request里去,之后如果request.js里面新增了方法,不必去重新引入
 import * as request from '@/utils/request.js'
 // 遍历request
 for (let key in request) {

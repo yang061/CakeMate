@@ -1,4 +1,4 @@
-let baseURL = "https://df4xp4bb.lc-cn-n1-shared.com/1.1/classes"
+let baseURL = "https://df4xp4bb.lc-cn-n1-shared.com/1.1"
 // url:地址,method='get' 方法默认为get ,data={} 数据，默认为空
 export const $http =  function (url,method='get',data={}){
 	return new Promise((resolve,reject)=>{
