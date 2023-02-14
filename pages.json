@@ -23,7 +23,8 @@
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "蛋糕",
-                "enablePullDownRefresh": false
+				// 开启下拉刷新方法
+                "enablePullDownRefresh": true
             }
             
         }
@@ -75,33 +76,6 @@
             
         }
     ],
-	"tabBar": {
-		"color": "#d8d8d8",
-		"selectedColor": "#444",
-		"list": [
-			{
-				"text": "首页",
-				// 绑定页面
-				"pagePath": "pages/index/index"
-			},
-			{
-				"text": "蛋糕",
-				"pagePath": "pages/cake/cake"
-				
-			},
-			{
-				"text": "个人中心",
-				"pagePath": "pages/my/my"
-			},{
-				"text": "主页",
-				"pagePath": "pages/home/home"
-			},
-			{
-				"text": "转录",
-				"pagePath": "pages/collect-data/collect-data"
-			}
-		]
-	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

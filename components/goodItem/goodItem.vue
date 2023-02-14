@@ -3,20 +3,18 @@
 			<!-- 每一项蛋糕内容 -->
 		<view class="cake-item">
 			<!-- 封面 -->
-			<view class="poster">
-				
-			</view>
+			<image class="poster" :src="good.img" mode="" ></image>
 			<view class="info-cont">
 				<view class="info">
 					<view class="fs-26">
-						甜甜霉霉
+						{{good.name}}
 					</view>
 					<view class="fs-14 color-95">
-						tiantianmeimei
+						{{good.french}}
 					</view>
 					<view class="fs-18">
 						<text>￥</text>
-						218.00
+						{{good.price}}
 					</view>
 				</view>
 				<view class="cart-btn">
@@ -31,6 +29,7 @@
 <script>
 	export default {
 		name:"goodItem",
+		props:['good'],
 		data() {
 			return {
 				
@@ -56,6 +55,7 @@
 		.info-cont{
 			display: flex;
 			justify-content: space-between;
+			margin-left: 10rpx;
 			.info{
 				.fs-26{
 					color: #121212;
