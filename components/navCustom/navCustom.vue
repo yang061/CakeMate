@@ -27,6 +27,11 @@
 
 <style lang="scss">
 .title{
+	position: fixed;
+	top: 0;
+	left:0;
+	width: 100%;
+	z-index: 999;
 	font-weight: 700;
 	.u-nav-slot{
 		position: relative;

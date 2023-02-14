@@ -1,15 +1,18 @@
 <template>
+	<view class="cake">
+	<navCustom></navCustom>
 	<view class="content">
 		<!-- 把good对象传给子组件 -->
 		<goodItem v-for="good in goodsList" :key="good.id" :good='good'></goodItem>
 		<view class="tabBar">
-			<view class="flex align-center" v-for="(tab,index) in tabArr" :key="index">
+			<view class="flex align-center" v-for="(tab,index) in tabArr" :key="index" @click="handleTab(tab)">
 				<text>
 					{{tab.name}}
 				</text>
 				<u-line direction="col" length="20" margin="40rpx" v-if="index<tabArr.length-1"></u-line>
 			</view>
 		</view>
+	</view>
 	</view>
 </template>
 
@@ -20,6 +23,8 @@
 				goodsList:[],
 				page:0,
 				skip:0,
+				// 存储分类类型
+				bcid:1,
 				// 底部菜单数据包,不需要pages.json里的底部导航栏
 				tabArr:[
 					{
@@ -80,7 +85,7 @@
 			// 加载数据函数
 			loadData(){
 				this.skip = this.page * 8
-				let url =`/classes/goods?where={"bcid":1}&limit=8&skip=${this.skip}`
+				let url =`/classes/goods?where={"bcid":${this.bcid}}&limit=8&skip=${this.skip}`
 				this.$get(url).then(res=>{
 					// 停止下拉刷新的加载弹框
 					uni.stopPullDownRefresh()
@@ -103,16 +108,41 @@
 						icon:'none'
 					})
 				})
+			},
+			
+			// 导航栏处理函数，点击不同的导航栏渲染不同的数据
+			handleTab(tab){
+				let {bcid,target} = tab
+				if(bcid){
+					// bcid存在，不为空
+					// 清除数据包,页数
+					// BUG 在重新请求时，会把原来的数据也请求过来
+					// 原因：下拉刷新时，执行的是onPullDownRefresh，里面的bcid又会变为默认值1
+					// 解决：在data里定义一个bcid，用来存储分类
+					this.page = 0
+					this.skip = 0
+					this.goodsList = []
+					// 修改bcid值
+					this.bcid = bcid
+					// 重新渲染数据
+					this.loadData(bcid)
+				}
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+.cake{
+	padding: 30rpx 15rpx 80rpx;
+	background-color: #fff;
+	
+}
 .content{
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
+	
 	.tabBar{
 		display: flex;
 		// 保证竖线的间距一样

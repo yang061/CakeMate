@@ -22,7 +22,7 @@
             "path" : "pages/cake/cake",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "蛋糕",
+                "navigationBarTitleText": "",
 				// 开启下拉刷新方法
                 "enablePullDownRefresh": true
             }
