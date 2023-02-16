@@ -123,6 +123,15 @@
 				"navigationStyle": "custom"
 			}
 		}
+        ,{
+            "path" : "pages/shopcart/shopcart",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
