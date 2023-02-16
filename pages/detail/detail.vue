@@ -2,8 +2,10 @@
 	<view>
 		<swiper class="banner" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
 			<swiper-item>
-				<view class="swiper-item">
-					<image :src="detail.img" mode="widthFix"></image>
+				<view class="swiper-item" v-for="banner in detail.list"  :key="banner.id">
+					<view v-for="(images,index) in banner.pic.list"  :key="index">
+						<image :src="`${banner.pic.url}${img}`" mode="widthFix" v-for="(img,index) in images" :key="index"></image>
+					</view>
 				</view>
 			</swiper-item>
 		</swiper>
@@ -14,6 +16,7 @@
 				:class="['text-center padding-sm tab',{active:tabIdx==index}]" 
 				@click="tabIdx=index"
 			>
+			
 				<view class="">{{item.spec}}</view>
 				<view class="">{{item.weight}}</view>
 				<view class="">{{item.edible}}</view>
