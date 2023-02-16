@@ -74,7 +74,46 @@
                 "enablePullDownRefresh": false
             }
             
-        }
+        },
+		{
+			// 登录
+			"path": "pages/login/login",
+			"style" :
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			// 注册
+			"path": "pages/login/reg",
+			"style" :
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			// 忘记密码
+			"path": "pages/login/forget",
+			"style" :
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		},{
+			// 登录成功页面
+			"path": "pages/login/agreement",
+			"style" :
+			{
+			    "navigationBarTitleText": "",
+			    "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
+			}
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
