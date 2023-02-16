@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 			<!-- 每一项蛋糕内容 -->
-		<view class="cake-item">
+		<view class="cake-item" @click="goDetailFn">
 			<!-- 封面 -->
 			<image class="poster" :src="good.img" mode="" ></image>
 			<view class="info-cont">
@@ -34,6 +34,21 @@
 			return {
 				
 			};
+		},
+		methods:{
+			// 跳转到详情页
+			goDetailFn(){
+				// 存储到本地缓存
+				uni.setStorage({
+					key:'DETAIL',
+					data:this.good,
+					success:()=>{
+						uni.navigateTo({
+							url:'/pages/detail/detail'
+						})
+					}
+				})
+			}
 		}
 	}
 </script>
