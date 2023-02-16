@@ -8,7 +8,7 @@
     <view class="list">
       <view class="list-call">
         <image class="img" src="/static/shilu-login/1.png"></image>
-        <input class="sl-input" v-model="phone" type="number" maxlength="11" placeholder="输入手机号" />
+        <input class="sl-input" v-model="username" type="number" maxlength="11" placeholder="输入用户名" />
       </view>
       <view class="list-call">
         <image class="img" src="/static/shilu-login/2.png"></image>
@@ -17,7 +17,7 @@
 
     </view>
 
-    <view class="button-login" hover-class="button-hover" @tap="bindLogin()">
+    <view class="button-login" hover-class="button-hover" @tap="loginFn">
       <text>登录</text>
     </view>
 
@@ -33,16 +33,16 @@
   export default {
     data() {
       return {
-        phone: '',
+        username: '',
         password: ''
       };
     },
     methods: {
-      bindLogin() {
-        if (this.phone.length != 11) {
+      loginFn() {
+        if (this.username.length != 11) {
           uni.showToast({
             icon: 'none',
-            title: '手机号格式不正确'
+            title: '用户名格式不正确'
           });
           return;
         }
@@ -53,27 +53,43 @@
           });
           return;
         }
-        uni.request({
-          url: 'http://***/login.html',
-          data: {
-            phone: this.phone,
-            password: this.password
-          },
-          method: 'POST',
-          dataType: 'json',
-          success: (res) => {
-            if (res.data.code != 200) {
-              uni.showToast({
-                title: res.data.msg,
-                icon: 'none'
-              });
-            } else {
-              //成功后的逻辑
-              uni.navigateBack();
-            }
-          }
-        });
-
+		// 方法1
+		// this.$post(
+		// 	'/login',{
+		// 		username:this.username,
+		// 		password:this.password,
+		// 	}
+		// ).then(res=>{
+		// 	console.log(res);
+		// 	let {code} = res
+		// 	// 用户名不存在
+		// 	if(code==211){
+		// 		uni.showToast({
+		// 			title:'用户不存在！！！',
+		// 			icon:'none'
+		// 		})
+		// 	}else if(code==210){
+		// 		uni.showToast({
+		// 			title:'账号或密码错误！！！',
+		// 			icon:'error'
+		// 		})
+		// 	}else{
+		// 		uni.showToast({
+		// 			title:'登录成功',
+		// 			icon:'success'
+		// 		})
+		// 		// 返回上一页
+				
+		// 	}
+		// })
+		//方法2
+		let {username,password} = this
+		// 开启了命名空间，要带模块名
+		this.$store.dispatch('user/userLoginAct',{
+			username,
+			password
+		})
+		
       }
     }
   }

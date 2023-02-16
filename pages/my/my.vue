@@ -6,9 +6,9 @@
 	</view>
 	<view class="cont">
 		<view class="margin bg-fff">
-			<view class="text-center flex flex-direction align-center">
-				<image src="../../static/logo.png" mode="" class="avatar"></image>
-				<text>张三丰</text>
+			<view class="text-center flex flex-direction align-center" @click="goLoginFn">
+				<image src="../../static/logo.png" mode="" class="avatar" ></image>
+				<text>{{userInfo}}</text>
 			</view>
 			<view class="mygrid">
 				<!-- 每一个格子 -->
@@ -55,7 +55,24 @@
 						name:'现金卡',
 					},
 				]
-			};
+			};		
+		},
+		computed:{
+			userInfo(){
+				let {userInfo} = this.$store.state.user
+				console.log(userInfo);
+				// 用户信息存在，返回用户名，不存在返回 '尚未登录'
+				let name = userInfo ? userInfo.username : '尚未登录'
+				return name
+			}
+		},
+		methods:{
+			// 跳转登录
+			goLoginFn(){
+				uni.navigateTo({
+					url:'/pages/login/login'
+				})
+			}
 		}
 	}
 </script>
@@ -65,7 +82,7 @@
 	height: 100rpx;
 }
 .cont{
-	background-color:#f6f6f6 ;
+	// background-color:#f6f6f6 ;
 	.mygrid {
 		display: flex;
 		flex-wrap: wrap;

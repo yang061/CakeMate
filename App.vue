@@ -10,6 +10,17 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			// 从本地存储里获取用户信息
+			try{
+				const value = uni.getStorageSync('USERINFO')
+				if(value){
+					// 本地存储里有值，就存取到vuex里
+					this.$store.commit('user/initUserInfo',value)
+				}
+			}catch(e){
+				console.log('failed');
+			}
+			
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -21,9 +32,6 @@
 </script>
 
 <style lang="scss">
-	body{
-		background-color: #fff
-	}
 	/* 注意要写在第一行，同时给style标签加入lang="scss"属性 */
 	@import "uview-ui/index.scss";
 </style>

@@ -8,26 +8,16 @@
     <view class="list">
       <view class="list-call">
         <image class="img" src="/static/shilu-login/1.png"></image>
-        <input class="sl-input" v-model="phone" type="number" maxlength="11" placeholder="手机号" />
+        <input class="sl-input" v-model="username" type="number" maxlength="11" placeholder="用户名" />
       </view>
       <view class="list-call">
         <image class="img" src="/static/shilu-login/2.png"></image>
         <input class="sl-input" v-model="password" type="text" maxlength="32" placeholder="登录密码" :password="!showPassword" />
         <image class="img" :src="showPassword?'/static/shilu-login/op.png':'/static/shilu-login/cl.png'" @tap="display"></image>
       </view>
-      <view class="list-call">
-        <image class="img" src="/static/shilu-login/3.png"></image>
-        <input class="sl-input" v-model="code" type="number" maxlength="4" placeholder="验证码" />
-        <view class="yzm" :class="{ yzms: second>0 }" @tap="getcode">{{yanzhengma}}</view>
-      </view>
-      <view class="list-call">
-        <image class="img" src="/static/shilu-login/4.png"></image>
-        <input class="sl-input" v-model="invitation" type="text" maxlength="12" placeholder="邀请码" />
-      </view>
-
     </view>
 
-    <view class="button-login" hover-class="button-hover" @tap="bindLogin">
+    <view class="button-login" hover-class="button-hover" @tap="regFn">
       <text>注册</text>
     </view>
 
@@ -52,13 +42,10 @@
     },
     data() {
       return {
-        phone: '',
+        username: '',
         password: '',
-        code: '',
-        invitation: '',
         agreement: true,
         showPassword: false,
-        second: 0
       };
     },
     computed: {
@@ -78,68 +65,13 @@
       this.clear()
     },
     methods: {
-      clear(){
-        clearInterval(js)
-        js = null
-        this.second = 0
-      },
       display() {
         this.showPassword = !this.showPassword
       },
       agreementSuccess() {
         this.agreement = !this.agreement;
       },
-      getcode() {
-        if (this.phone.length != 11) {
-          uni.showToast({
-            icon: 'none',
-            title: '手机号不正确'
-          });
-          return;
-        }
-        if (this.second > 0) {
-          return;
-        }
-        this.second = 60;
-        //请求业务
-        js = setInterval(function() {
-          _this.second--;
-          if (_this.second == 0) {
-            _this.clear()
-          }
-        }, 1000)
-        // uni.request({
-        //   url: 'http://***/getcode.html', //仅为示例，并非真实接口地址。
-        //   data: {
-        //     phone: this.phone,
-        //     type: 'reg'
-        //   },
-        //   method: 'POST',
-        //   dataType: 'json',
-        //   success: (res) => {
-        //     if (res.data.code != 200) {
-        //       uni.showToast({
-        //         title: res.data.msg,
-        //         icon: 'none'
-        //       });
-        //     } else {
-        //       uni.showToast({
-        //         title: res.data.msg
-        //       });
-        //       js = setInterval(function() {
-        //         _this.second--;
-        //         if (_this.second == 0) {
-        //           _this.clear()
-        //         }
-        //       }, 1000)
-        //     }
-        //   },
-        //   fail() {
-        //     this.second == 0
-        //   }
-        // });
-      },
-      bindLogin() {
+      regFn() {
         if (this.agreement == false) {
           uni.showToast({
             icon: 'none',
@@ -147,53 +79,41 @@
           });
           return;
         }
-        if (this.phone.length != 11) {
+        if (this.username.length != 11) {
           uni.showToast({
             icon: 'none',
-            title: '手机号不正确'
+            title: '用户名格式不正确'
           });
           return;
         }
         if (this.password.length < 6) {
           uni.showToast({
             icon: 'none',
-            title: '密码不正确'
+            title: '密码格式不正确'
           });
           return;
         }
-        if (this.code.length != 4) {
-          uni.showToast({
-            icon: 'none',
-            title: '验证码不正确'
-          });
-          return;
-        }
-        uni.request({
-          url: 'http://***/reg.html',
-          data: {
-            phone: this.phone,
+		this.$post('/users',{
+            username: this.username,
             password: this.password,
-            code: this.code,
-            invitation: this.invitation
-          },
-          method: 'POST',
-          dataType: 'json',
-          success: (res) => {
-            if (res.data.code != 200) {
-              uni.showToast({
-                title: res.data.msg,
-                icon: 'none'
-              });
-            } else {
-              uni.showToast({
-                title: res.data.msg
-              });
-              setTimeout(function() {
-                uni.navigateBack();
-              }, 1500)
-            }
-          }
-        });
+            code: this.code
+          }).then(res=>{
+			  console.log(res);
+			  let {code,objectId} =res
+			  // 不是202，就是注册成功，否则被占用
+			  if(code !== 202){
+				  uni.showToast({
+				  	title:'注册成功喽！！！',
+				  	icon:'success'
+				  })
+			  }else{
+				  uni.showToast({
+				  	title:'用户名被占用了！！！',
+				  	icon:'none'
+				  })
+			  }
+		  })
+        
 
       }
     }
