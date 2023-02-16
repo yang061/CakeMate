@@ -2,6 +2,7 @@ import App from './App'
 
 // #ifndef VUE3
 import Vue from 'vue'
+import store from '@/store/index.js'
 // main.js，注意要在use方法之后执行
 import uView from 'uview-ui'
 Vue.use(uView)
@@ -23,7 +24,9 @@ for (let key in request) {
 Vue.config.productionTip = false
 App.mpType = 'app'
 const app = new Vue({
-    ...App
+    ...App,
+	// 注册store
+	store,
 })
 app.$mount()
 // #endif

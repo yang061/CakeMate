@@ -24,13 +24,23 @@
 					</view>
 					<!-- 3级子菜单,isLink显示右箭头 -->
 					<u-cell-group v-if="listShow">
-						<u-cell :title="subItem.tname" isLink v-for="(subItem,index) in item.list" :key="subItem.tid" ></u-cell>
+						<u-cell 
+						:title="subItem.tname" 
+						isLink v-for="(subItem,index) in item.list" 
+						:key="subItem.tid" 
+						@click="handleList(subItem,'list')"
+						></u-cell>
 					</u-cell-group>
 					<view class="subMenu2" v-if="index==0" @click="sceneShow = !sceneShow" >
 						场景筛选
 					</view>
 					<u-cell-group v-if="sceneShow" >
-						<u-cell :title="scene.tname" isLink v-for="(scene,index) in item.scene" :key="index"></u-cell>
+						<u-cell 
+						:title="scene.tname" 
+						isLink v-for="(scene,index) in item.scene" 
+						:key="index"
+						@click="handleList(scene,'scene')"
+						></u-cell>
 					</u-cell-group>
 				</view>
 			</view>
@@ -56,7 +66,7 @@
 					{name: "购物车",bcid: '',target: '/page/shopcart/shopcart'},
 				],
 				// 控制遮罩层显示与隐藏
-				show:true,
+				show:false,
 				// 存储分类数据
 				cfyList:[],
 				// 控制左侧遮罩层场景信息出现与隐藏
@@ -79,7 +89,6 @@
 			
 			// 获取左侧菜单数据包
 			this.$get('/classes/classify').then(res=>{
-				console.log(res);
 				this.cfyList = res.results
 			})
 		},
@@ -96,11 +105,27 @@
 			// 重新请求数据
 			this.loadData()
 		},
+		computed:{
+			num(){
+				return this.$store.state.count.num
+			},
+			condition(){
+				return this.$store.state.condition.condition
+			}
+		},
 		methods: {
+			// 刷新页面数据
+			reloadData(){
+				this.page = 0
+				this.skip = 0
+				this.goodsList = []
+				this.loadData()
+			},
 			// 加载数据函数
 			loadData() {
 				this.skip = this.page * 8
-				let url = `/classes/goods?where={"bcid":${this.bcid}}&limit=8&skip=${this.skip}`
+				let wh = JSON.stringify(this.condition)
+				let url = `/classes/goods?where=${wh}&limit=8&skip=${this.skip}`
 				this.$get(url).then(res => {
 					// 停止下拉刷新的加载弹框
 					uni.stopPullDownRefresh()
@@ -139,13 +164,15 @@
 					// BUG 在重新请求时，会把原来的数据也请求过来
 					// 原因：下拉刷新时，执行的是onPullDownRefresh，里面的bcid又会变为默认值1
 					// 解决：在data里定义一个bcid，用来存储分类
-					this.page = 0
-					this.skip = 0
-					this.goodsList = []
+					
 					// 修改bcid值
-					this.bcid = bcid
-					// 重新渲染数据
-					this.loadData(bcid)
+					// 单项数据流
+					this.$store.commit('changeCondition',{
+						// 转换为数字类型
+						bcid:Number(bcid)
+					})
+					// 刷新数据
+					this.reloadData()
 				}
 				if(!bcid&&!target){
 					// 没有bcid和target=== 分类按钮
@@ -157,7 +184,18 @@
 			// 遮罩层关闭的回调
 			handleClose(){
 				this.show=false
-			}
+			},
+			
+			// 口味筛选，场景筛选点击事件
+			handleList({bid,tid},type){
+				let obj = {
+					bcid:bid
+				}
+				type === 'list' ? obj.fid =tid : obj.sid = tid
+				this.$store.commit('changeCondition',obj)
+				this.reloadData()
+			},
+
 			
 		}
 	}
