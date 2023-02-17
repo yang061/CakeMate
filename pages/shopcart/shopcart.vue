@@ -127,7 +127,10 @@
 			...mapState({
 				cartList: state => state.cart.cartList
 			}),
-			...mapGetters(['isAllChecked','sumPrice']),
+			...mapGetters({
+				isAllChecked:'cart/isAllChecked',
+				sumPrice:'cart/sumPrice',
+			}),
 			checkedCartInfo(){
 				// 过滤选中后的商品信息,弹窗里面
 				let {cartIndex,cartList,dropIndex} =this
@@ -136,16 +139,16 @@
 			
 		},
 		onLoad() {
-			console.log(this.sumPrice)
+			console.log(this.cartList)
 		},
 		methods: {
 			// 修改单选按钮状态
 			changeChecked(index) {
-				this.$store.commit('cartCheckMut', index)
+				this.$store.commit('cart/cartCheckMut', index)
 			},
 			// 修改全选按钮状态
 			changeAllChecked(bool) {
-				this.$store.commit('cartAllCheckMut', bool)
+				this.$store.commit('cart/cartAllCheckMut', bool)
 			},
 			// 修改编辑信息，控制显示与隐藏
 			handleEdit(idx) {
@@ -164,7 +167,7 @@
 				this.show = false
 				let {cartIndex,dropIndex,num} = this
 				console.log(cartIndex,dropIndex,num);
-				this.$store.commit('cartListCheckMut',{cartIndex,dropIndex,num})
+				this.$store.commit('cart/cartListCheckMut',{cartIndex,dropIndex,num})
 			},
 			changeNum({value}){
 				this.num =value

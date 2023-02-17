@@ -34,13 +34,20 @@
 			{{detail.list[tabIdx].fittings}}
 		</view>
 		<view class="flex justify-around fixed padding-tb-sm">
-			<button class="cu-btn bg-brown lg" type="default">加入购物车</button>
+			<button 
+			class="cu-btn bg-brown lg" 
+			type="default"
+			@click="cartAddFn(detail)"
+			>
+			加入购物车
+			</button>
 			<button class="cu-btn bg-yellow lg" type="default">立即购买</button>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {mapMutations} from 'vuex'
 	export default {
 		data() {
 			return {
@@ -52,10 +59,16 @@
 			uni.getStorage({
 				key:'DETAIL',
 				success: (res) => {
-					console.log(res);
 					this.detail = res.data
 				}
 			})
+		},
+		methods:{
+			// 加入购物车
+			cartAddFn(goodObj){
+				console.log(this.$store);
+				this.$store.commit('cart/cartAddMut',goodObj)
+			}
 		}
 	}
 </script>
