@@ -16,7 +16,7 @@
 						￥{{item.list[item.idx].price * item.num}}
 					</view>
 					<view class="right">
-						<view class="edit" @click="handleEdit(index)">
+						<view class="edit" @click="handleEdit(index,item.num)">
 							<text class="iconfont icon-bianji"></text>
 						</view>
 						<text>{{item.list[item.idx].spec}} X {{item.num}}</text>
@@ -77,7 +77,7 @@
 						<view class="">
 							数量选择
 						</view>
-						<u-number-box button-size="36" @change="changeNum" ></u-number-box>
+						<u-number-box button-size="36" @change="changeNum" :value="num"></u-number-box>
 					</view>
 					<view class="flex margin-top ">
 						<button @click="show=false" type="default" class="cu-btn lg bg-brown color-fff">取消</button>
@@ -121,7 +121,6 @@
 				dropIndex:0,
 				// 当前弹窗商品数量
 				num:1,
-				
 			};
 		},
 		computed: {
@@ -140,7 +139,7 @@
 			
 		},
 		onLoad() {
-			console.log(this.cartList)
+			console.log(this.checkedCartInfo)
 		},
 		methods: {
 			// 修改单选按钮状态
@@ -152,7 +151,7 @@
 				this.$store.commit('cart/cartAllCheckMut', bool)
 			},
 			// 修改编辑信息，控制显示与隐藏
-			handleEdit(idx) {
+			handleEdit(idx,num) {
 				// 把下拉下标改为vuex中的idx，相当于重置
 				this.dropIndex = this.cartList[idx].idx
 				this.cartIndex = idx

@@ -99,6 +99,7 @@ export default {
 			state.cartList.forEach(item => {
 				item.ischeck = !bool
 			})
+			
 		},
 		//子商品的下拉处理
 		cartListCheckMut(state, {
