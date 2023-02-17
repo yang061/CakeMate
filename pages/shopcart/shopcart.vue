@@ -12,13 +12,13 @@
 					<view class="left">
 						{{item.name}}
 						<view class="enName">{{item.french}}</view>
-						￥{{item.price}}
+						￥{{item.list[item.idx].price * item.num}}
 					</view>
 					<view class="right">
 						<view class="edit" @click="handleEdit(index)">
 							<text class="iconfont icon-bianji"></text>
 						</view>
-						<text>1磅(454g) X 1</text>
+						<text>{{item.list[item.idx].spec}} X {{item.num}}</text>
 					</view>
 				</view>
 			</view>
@@ -34,8 +34,9 @@
 				</view>
 			</view>
 			<!-- 弹窗 -->
-			<u-overlay :show="show" @click="show = true">
-				<view class="mask">
+			<u-overlay :show="show" @click="show = false">
+				<!-- @click.stop阻止冒泡 -->
+				<view class="mask" @click.stop>
 					<view class="flex">
 						<view class="margin-right-lg ">
 							<image :src="item.img" mode="" class="skuImg"></image>
@@ -44,7 +45,7 @@
 							<view class="left">
 								{{cartList[cartIndex].name}}
 								<view class="margin-tb-xs">{{cartList[cartIndex].french}}</view>
-								￥{{cartList[cartIndex].price}}
+								￥{{checkedCartInfo.price}} 
 							</view>
 						</view>
 					</view>
@@ -54,9 +55,9 @@
 						</view>
 						<view class="drop">
 							<view @click="dropShow=true">
-								{{cartList[cartIndex].list[cartList[cartIndex].idx].spec}}
+								{{checkedCartInfo.spec}}
 								-
-								{{cartList[cartIndex].list[cartList[cartIndex].idx].edible}}
+								{{checkedCartInfo.edible}}
 								<text class="iconfont icon-xiala"></text>
 							</view>
 							<view class="drop-list bg-fff" v-if="dropShow">
@@ -75,7 +76,7 @@
 						<view class="">
 							数量选择
 						</view>
-						<u-number-box button-size="36"></u-number-box>
+						<u-number-box button-size="36" @change="changeNum" ></u-number-box>
 					</view>
 					<view class="flex margin-top ">
 						<button @click="show=false" type="default" class="cu-btn lg bg-brown color-fff">取消</button>
@@ -90,7 +91,7 @@
 				<text class="iconfont icon-gouxuan margin-right-xs" :class="isAllChecked ? 'color-yellow' : ''"
 					@click="changeAllChecked(isAllChecked)"></text>全选
 				<view class="margin-left">
-					共计:189
+					共计:{{sumPrice}}
 				</view>
 			</view>
 			<view class="bg-yellow padding text-center color-fff">
@@ -113,16 +114,29 @@
 				show: true,
 				// 遮罩层的下拉框显示与隐藏
 				dropShow: true,
-				// 购物车索引号
+				// 购物车索引号,主商品序号
 				cartIndex: 0,
+				// 子商品序号
+				dropIndex:0,
+				// 当前弹窗商品数量
+				num:1,
+				
 			};
 		},
 		computed: {
 			...mapState({
 				cartList: state => state.cart.cartList
 			}),
-			...mapGetters(['isAllChecked'])
-
+			...mapGetters(['isAllChecked','sumPrice']),
+			checkedCartInfo(){
+				// 过滤选中后的商品信息,弹窗里面
+				let {cartIndex,cartList,dropIndex} =this
+				return cartList[cartIndex].list[dropIndex]
+			}
+			
+		},
+		onLoad() {
+			console.log(this.sumPrice)
 		},
 		methods: {
 			// 修改单选按钮状态
@@ -135,16 +149,25 @@
 			},
 			// 修改编辑信息，控制显示与隐藏
 			handleEdit(idx) {
+				// 把下拉下标改为vuex中的idx，相当于重置
+				this.dropIndex = this.cartList[idx].idx
 				this.cartIndex = idx
 				this.show = true
 			},
 			// 子列表下拉点击行为
 			handleDropList(dropIdx){
 				this.dropShow = false
-				let {cartIndex} = this
-				console.log(cartIndex);
-				console.log(this.$store.commit);
-				this.$store.commit('cartListCheckMut',{cartIdx:cartIndex,dropIdx})
+				this.dropIndex = dropIdx
+			},
+			handleOk(){
+				// 关闭遮罩层
+				this.show = false
+				let {cartIndex,dropIndex,num} = this
+				console.log(cartIndex,dropIndex,num);
+				this.$store.commit('cartListCheckMut',{cartIndex,dropIndex,num})
+			},
+			changeNum({value}){
+				this.num =value
 			}
 		}
 	}

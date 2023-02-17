@@ -52,8 +52,9 @@ export default {
 			})
 		},
 		//子商品的下拉处理
-		cartListCheckMut(state,{cartIdx,dropIdx}){
-			state.cartList[cartIdx].idx = dropIdx
+		cartListCheckMut(state,{cartIndex,dropIndex,num}){
+			state.cartList[cartIndex].idx = dropIndex
+			state.cartList[cartIndex].num = num
 		}
 	},
 	getters:{
@@ -67,6 +68,16 @@ export default {
 			})
 			return isAll
 			
+		},
+		// 计算总价
+		sumPrice(state){
+			let allPrice = 0
+			state.cartList.forEach(item=>{
+				if(item.ischeck){
+					allPrice += item.list[item.idx].price * item.num
+				}
+			})
+			return allPrice
 		}
 	}
 }
