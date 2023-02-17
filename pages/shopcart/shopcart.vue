@@ -1,17 +1,11 @@
 <template>
 	<view>
+		<navCustom></navCustom>
 		<view class="cart-box" v-for="(item,index) in cartList" :key="item.id">
-			<view class="cart-title">
-				
-
-			</view>
 			<view class="cart-footer">
 				<view class="cart-content">
-					<text 
-					class="iconfont icon-gouxuan" 
-					:class="item.ischeck ? 'color-yellow' : ''" 
-					@click="changeChecked(index)"
-					></text>
+					<text class="iconfont icon-gouxuan" :class="item.ischeck ? 'color-yellow' : ''"
+						@click="changeChecked(index)"></text>
 					<image :src="item.img" mode="" class="skuImg"></image>
 				</view>
 				<view class="skuInfo">
@@ -21,7 +15,7 @@
 						￥{{item.price}}
 					</view>
 					<view class="right">
-						<view class="edit">
+						<view class="edit" @click="handleEdit(index)">
 							<text class="iconfont icon-bianji"></text>
 						</view>
 						<text>1磅(454g) X 1</text>
@@ -39,14 +33,62 @@
 					<text class="change">修改优惠</text>
 				</view>
 			</view>
+			<!-- 弹窗 -->
+			<u-overlay :show="show" @click="show = true">
+				<view class="mask">
+					<view class="flex">
+						<view class="margin-right-lg ">
+							<image :src="item.img" mode="" class="skuImg"></image>
+						</view>
+						<view class="skuInfo">
+							<view class="left">
+								{{cartList[cartIndex].name}}
+								<view class="margin-tb-xs">{{cartList[cartIndex].french}}</view>
+								￥{{cartList[cartIndex].price}}
+							</view>
+						</view>
+					</view>
+					<view class="flex justify-between padding-tb-sm u-border-bottom">
+						<view class="">
+							规格选择
+						</view>
+						<view class="drop">
+							<view @click="dropShow=true">
+								{{cartList[cartIndex].list[cartList[cartIndex].idx].spec}}
+								-
+								{{cartList[cartIndex].list[cartList[cartIndex].idx].edible}}
+								<text class="iconfont icon-xiala"></text>
+							</view>
+							<view class="drop-list bg-fff" v-if="dropShow">
+								<view 
+								class="padding-sm" 
+								v-for="(item,index) in cartList[cartIndex].list" 
+								:key="index"
+								@click="handleDropList(index)"
+								>
+									{{item.spec}}--{{item.edible}}
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="flex justify-between padding-tb-sm u-border-bottom">
+						<view class="">
+							数量选择
+						</view>
+						<u-number-box button-size="36"></u-number-box>
+					</view>
+					<view class="flex margin-top ">
+						<button @click="show=false" type="default" class="cu-btn lg bg-brown color-fff">取消</button>
+						<button @click="handleOk" type="default" class="cu-btn lg bg-yellow">确认</button>
+					</view>
+				</view>
+
+			</u-overlay>
 		</view>
 		<view class="bg-fff flex myfixed">
 			<view class="flex flex-sub padding align-center">
-				<text 
-				class="iconfont icon-gouxuan margin-right-xs" 
-				:class="isAllChecked ? 'color-yellow' : ''"
-				@click="changeAllChecked(isAllChecked)"
-				></text>全选
+				<text class="iconfont icon-gouxuan margin-right-xs" :class="isAllChecked ? 'color-yellow' : ''"
+					@click="changeAllChecked(isAllChecked)"></text>全选
 				<view class="margin-left">
 					共计:189
 				</view>
@@ -60,37 +102,68 @@
 </template>
 
 <script>
-	import {mapState,mapGetters} from 'vuex'
+	import {
+		mapState,
+		mapGetters
+	} from 'vuex'
 	export default {
 		data() {
 			return {
-				
+				// 控制遮罩层显示和隐藏
+				show: true,
+				// 遮罩层的下拉框显示与隐藏
+				dropShow: true,
+				// 购物车索引号
+				cartIndex: 0,
 			};
 		},
-		computed:{
+		computed: {
 			...mapState({
-				cartList:state=>state.cart.cartList
+				cartList: state => state.cart.cartList
 			}),
 			...mapGetters(['isAllChecked'])
-			
+
 		},
-		methods:{
+		methods: {
 			// 修改单选按钮状态
-			changeChecked(index){
-				this.$store.commit('cartCheckMut',index)
+			changeChecked(index) {
+				this.$store.commit('cartCheckMut', index)
 			},
 			// 修改全选按钮状态
-			changeAllChecked(bool){
-				this.$store.commit('cartAllCheckMut',bool)
+			changeAllChecked(bool) {
+				this.$store.commit('cartAllCheckMut', bool)
+			},
+			// 修改编辑信息，控制显示与隐藏
+			handleEdit(idx) {
+				this.cartIndex = idx
+				this.show = true
+			},
+			// 子列表下拉点击行为
+			handleDropList(dropIdx){
+				this.dropShow = false
+				let {cartIndex} = this
+				console.log(cartIndex);
+				console.log(this.$store.commit);
+				this.$store.commit('cartListCheckMut',{cartIdx:cartIndex,dropIdx})
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.icon-gouxuan{
+	page{
+		background-color: #fff;
+	}
+	.skuImg {
+		width: 180rpx;
+		height: 180rpx;
+		background-color: #d8d8d8;
+	}
+
+	.icon-gouxuan {
 		color: #d8d8d8;
 	}
+
 	.cart-box {
 		padding: 30rpx 15rpx;
 
@@ -112,11 +185,7 @@
 					line-height: 150rpx;
 				}
 
-				.skuImg {
-					width: 180rpx;
-					height: 180rpx;
-					background-color: #d8d8d8;
-				}
+
 
 			}
 
@@ -191,10 +260,46 @@
 			}
 		}
 	}
-	.myfixed{
+
+	.myfixed {
 		width: 100%;
 		position: fixed;
 		bottom: 0;
 		left: 0;
+	}
+
+	.cu-btn.lg {
+		width: 50%;
+		border-radius: 0;
+	}
+
+	// 遮罩
+	.mask {
+		background-color: #fff;
+		margin: 15rpx 15rpx 0;
+		padding: 20rpx 20rpx 0;
+		position: absolute;
+		top: 45%;
+		left: 18rpx;
+		width: 690rpx;
+		transform: translateY(-50%);
+		border-radius: 10upx;
+	}
+
+	.drop {
+		position: relative;
+
+		.drop-list {
+			width: 300upx;
+			position: absolute;
+			top: 60upx;
+			right: 0;
+			box-shadow: 0 0 10upx 2upx rgba(0, 0, 0, 0.2);
+			z-index: 10;
+
+			view:hover {
+				background-color: #e6e6e6;
+			}
+		}
 	}
 </style>

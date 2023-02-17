@@ -179,6 +179,12 @@
 					// 点击后,显示遮罩层
 					this.show = true
 				}
+				// 点击购物车
+				if(target=='/page/shopcart/shopcart'){
+					uni.navigateTo({
+						url:'/pages/shopcart/shopcart'
+					})
+				}
 			},
 			
 			// 遮罩层关闭的回调
