@@ -111,14 +111,23 @@ export default {
 		},
 		// 添加购物车
 		cartAddMut(state, goodObj) {
+			// 判断去除相同的商品，有重复的执行数量加1
+			let {cartList} = state
+			for(let i=0 ; i<cartList.length ; i++){
+				let { id , idx } = goodObj
+				// 购物车有完全一样的商品，执行数量加1
+				if(cartList[i].id == id && cartList[i].idx == idx){
+					cartList[i].num ++ 
+					return
+				}
+			}
 			// 新增三个自己定义的数据ischeck，num, idx
 			// goodObj.ischeck = false 非响应式方法
 			// 响应式方法
 			Vue.set(goodObj,'ischeck',false)
 			Vue.set(goodObj,'num',1)
-			Vue.set(goodObj,'idx',0)
+			// Vue.set(goodObj,'idx',0)
 			state.cartList.push(goodObj)
-			console.log(state.cartList)
 
 		}
 	},

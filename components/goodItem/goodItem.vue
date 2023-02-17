@@ -17,7 +17,8 @@
 						{{good.price}}
 					</view>
 				</view>
-				<view class="cart-btn">
+				<!-- 停止冒泡 -->
+				<view class="cart-btn" @click.stop="cartAddFn">
 					<text class="iconfont icon-gouwuche"></text>
 				</view>
 			</view>
@@ -47,6 +48,14 @@
 							url:'/pages/detail/detail'
 						})
 					}
+				})
+			},
+			// 加入购物车
+			cartAddFn(){
+				this.$store.commit('cart/cartAddMut',{
+					...this.good,
+					// 子商品分类
+					idx:0
 				})
 			}
 		}

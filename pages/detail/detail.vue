@@ -37,7 +37,7 @@
 			<button 
 			class="cu-btn bg-brown lg" 
 			type="default"
-			@click="cartAddFn(detail)"
+			@click="cartAddFn({...detail,idx:tabIdx})"
 			>
 			加入购物车
 			</button>
@@ -51,6 +51,7 @@
 	export default {
 		data() {
 			return {
+				// 标志用户切换选中的子商品序号
 				tabIdx:0,
 				detail:null
 			}

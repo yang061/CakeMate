@@ -1,7 +1,8 @@
 <template>
 	<view>
 		<navCustom></navCustom>
-		<view class="cart-box" v-for="(item,index) in cartList" :key="item.id">
+		<!-- 把key变化一下，因为有同类商品，磅数不同 -->
+		<view class="cart-box" v-for="(item,index) in cartList" :key="item.id+item.idx">
 			<view class="cart-footer">
 				<view class="cart-content">
 					<text class="iconfont icon-gouxuan" :class="item.ischeck ? 'color-yellow' : ''"
