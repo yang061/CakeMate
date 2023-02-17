@@ -1,16 +1,19 @@
 // 引入Vue和Vuex
 import Vue from 'vue'
 import Vuex from 'vuex'
+import count from './count.js'
 import condition from './condition.js'
 import user from '@/store/user.js'
+import cart from '@/store/cart.js'
 Vue.use(Vuex)
 
 // 定义store
 const store = new Vuex.Store({
 	modules:{
-		count:()=>import('./count.js'),
+		count,
 		condition,
 		user,
+		cart,
 	}
 })
 

@@ -1,20 +1,24 @@
 <template>
 	<view>
-		<view class="cart-box">
+		<view class="cart-box" v-for="(item,index) in cartList" :key="item.id">
 			<view class="cart-title">
-				<text class="iconfont icon-"></text>
+				
 
 			</view>
 			<view class="cart-footer">
 				<view class="cart-content">
-					<text class="iconfont icon-gouxuan"></text>
-					<image src="" mode="" class="skuImg"></image>
+					<text 
+					class="iconfont icon-gouxuan" 
+					:class="item.ischeck ? 'color-yellow' : ''" 
+					@click="changeChecked(index)"
+					></text>
+					<image :src="item.img" mode="" class="skuImg"></image>
 				</view>
 				<view class="skuInfo">
 					<view class="left">
-						安逸兔
-						<view class="enName">anyitu</view>
-						￥218.00
+						{{item.name}}
+						<view class="enName">{{item.french}}</view>
+						￥{{item.price}}
 					</view>
 					<view class="right">
 						<view class="edit">
@@ -38,7 +42,11 @@
 		</view>
 		<view class="bg-fff flex myfixed">
 			<view class="flex flex-sub padding align-center">
-				<text class="iconfont icon-gouxuan margin-right-xs"></text>全选
+				<text 
+				class="iconfont icon-gouxuan margin-right-xs" 
+				:class="isAllChecked ? 'color-yellow' : ''"
+				@click="changeAllChecked(isAllChecked)"
+				></text>全选
 				<view class="margin-left">
 					共计:189
 				</view>
@@ -52,11 +60,29 @@
 </template>
 
 <script>
+	import {mapState,mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
-
+				
 			};
+		},
+		computed:{
+			...mapState({
+				cartList:state=>state.cart.cartList
+			}),
+			...mapGetters(['isAllChecked'])
+			
+		},
+		methods:{
+			// 修改单选按钮状态
+			changeChecked(index){
+				this.$store.commit('cartCheckMut',index)
+			},
+			// 修改全选按钮状态
+			changeAllChecked(bool){
+				this.$store.commit('cartAllCheckMut',bool)
+			}
 		}
 	}
 </script>
@@ -147,7 +173,7 @@
 				margin-right: 20rpx;
 				padding: 5rpx 15rpx;
 				border-radius: 20rpx;
-				background-color: #ebdfca;
+				background-color: #e6e0e0;
 
 			}
 
@@ -156,7 +182,7 @@
 				color: orangered;
 				padding: 5rpx 15rpx;
 				border-radius: 20rpx;
-				background-color: #ebdfca;
+				background-color: #e6e0e0;
 			}
 
 			.change {
