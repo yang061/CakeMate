@@ -1,4 +1,4 @@
-import {$post,$get} from '@/utils/request.js'
+import {$post,$get,$delete} from '@/utils/request.js'
 export default {
 	namespaced:true,
 	state(){
@@ -46,6 +46,9 @@ export default {
 		// 初始化地址数据
 		initAddressMut(state,addressArr){
 			state.addressList = addressArr
+		},
+		deleteAddressMut(state,index){
+			console.log(state.addressList);
 		}
 	},
 	actions:{
@@ -89,6 +92,18 @@ export default {
 			let url = `/classes/address?where={"userId":"${userId}"}`
 			$get(url).then(({results})=>{
 				context.commit('initAddressMut',results)
+				console.log(results);
+			})
+		},
+		// 删除地址
+		deleteAddressAct(context,{objectId,userId}){
+			$delete(`/classes/address/${objectId}`).then(res=>{
+				// 重新初始化数据
+				context.dispatch("initAddressAct",userId)
+				// uni.navigateTo({
+				// 	url:"@/../pages/address/address"
+				// })
+				console.log(userId);
 			})
 		}
 	},

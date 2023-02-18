@@ -36,7 +36,7 @@
 					设为默认
 				</view>
 				<u-line length="25" direction="col" color="#7a7a7a"></u-line>
-				<view class="color-95">
+				<view class="color-95" @click="deleteFn(index)">
 					删除地址
 				</view>
 			</view>
@@ -95,6 +95,14 @@
 				uni.navigateTo({
 					url:'/pages/address/address-detail'
 				})
+			},
+			// 删除地址操作
+			deleteFn(index){
+				// 获取objectId
+				let objectId = this.addressList[index].objectId
+				let userId = this.userInfo.objectId
+				// 发送请求
+				this.$store.dispatch('address/deleteAddressAct',{objectId,userId})
 			}
 		}
 	}
