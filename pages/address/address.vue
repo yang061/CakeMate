@@ -1,16 +1,22 @@
 <template>
 	<view>
-		<view class="margin-sm u-border padding default">
-			<view class="default-cont">
+		<view 
+		class="margin-sm u-border padding default" 
+		v-for="(address,index) in addressList" 
+		:key="index"
+		>
+			<view class="default-cont" v-if="address.isDefault">
 				默
 			</view>
 			<view class="flex justify-between">
 				<view class="flex align-center">
 					<text class="iconfont icon-gouxuan margin-right"></text>
 					<view class="">
-						111，888888888
+						{{address.username}}，{{address.phone}}
 						<view class="">
-							四川 成都
+							{{address.city}} 
+							{{address.region}} 
+							{{address.detail}}
 						</view>
 					</view>
 				</view>
@@ -19,11 +25,14 @@
 				</view>
 			</view>
 			<view class="flex justify-around align-center margin-top">
-				<view class="">
+				<view class="" v-if="address.isDefault">
+					默认地址
+				</view>
+				<view class="" v-else @click="setDefaultFn(index)">
 					设为默认
 				</view>
 				<u-line length="25" direction="col" color="#7a7a7a"></u-line>
-				<view class="">
+				<view class="color-95">
 					删除地址
 				</view>
 			</view>
@@ -35,11 +44,24 @@
 </template>
 
 <script>
+	import {mapState} from 'vuex'
 	export default {
 		data() {
 			return {
-
+			
 			};
+		},
+		computed:{
+			// 取出地址信息列表
+			...mapState({
+				addressList:state=>state.address.addressList
+			})
+		},
+		methods:{
+			// 设为默认==》点击事件
+			setDefaultFn(index){
+				this.$store.dispatch('address/setDefaultAddress',index)
+			}
 		}
 	}
 </script>

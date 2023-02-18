@@ -5,6 +5,7 @@ import count from './count.js'
 import condition from './condition.js'
 import user from '@/store/user.js'
 import cart from '@/store/cart.js'
+import address from '@/store/address.js'
 Vue.use(Vuex)
 
 // 定义store
@@ -14,6 +15,7 @@ const store = new Vuex.Store({
 		condition,
 		user,
 		cart,
+		address
 	}
 })
 
