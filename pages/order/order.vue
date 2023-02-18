@@ -1,11 +1,13 @@
 <template>
 	<!-- 订单页面 -->
 	<view>
-		<view class="padding flex justify-between">
+		<view @click="handleAddress" class="padding flex justify-between">
 			<view class="">
-				111，888888888
+				{{orderAddress.username}}，{{orderAddress.phone}}
 				<view class="">
-					四川 成都
+					{{orderAddress.city}} 
+					{{orderAddress.region}} 
+					{{orderAddress.detail}}
 				</view>
 			</view>
 			<text class="cuIcon-right"></text>
@@ -46,11 +48,26 @@
 </template>
 
 <script>
+	import {mapGetters} from 'vuex'
 	export default {
 		data() {
 			return {
 
 			};
+		},
+		computed:{
+			...mapGetters({
+				// 获取订单地址
+				'orderAddress':'address/orderAddress'
+			})
+		},
+		methods:{
+			handleAddress(){
+				// 跳转到地址页
+				uni.navigateTo({
+					url:'/pages/address/address'
+				})
+			}
 		}
 	}
 </script>

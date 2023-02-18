@@ -10,7 +10,11 @@
 			</view>
 			<view class="flex justify-between">
 				<view class="flex align-center">
-					<text class="iconfont icon-gouxuan margin-right"></text>
+					<text 
+					class="iconfont icon-gouxuan margin-right"
+					:class="checkedIndex == index || address.isDefault ? 'color-yellow' : ''"
+					@click="handleCheckAddress(index)"
+					></text>
 					<view class="">
 						{{address.username}}，{{address.phone}}
 						<view class="">
@@ -54,19 +58,28 @@
 		computed:{
 			// 取出地址信息列表
 			...mapState({
-				addressList:state=>state.address.addressList
-			})
+				addressList:state=>state.address.addressList,
+				// 被选中的索引号
+				checkedIndex:state=>state.address.checkedIndex
+			}),
 		},
 		methods:{
 			// 设为默认==》点击事件
 			setDefaultFn(index){
 				this.$store.dispatch('address/setDefaultAddress',index)
+			},
+			// 选中地址处理函数
+			handleCheckAddress(index){
+				this.$store.dispatch('address/addressCheck',index)
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	.icon-gouxuan{
+		color: #b9b9b9;
+	}
 	.edit {
 		width: 80rpx;
 		height: 80rpx;
