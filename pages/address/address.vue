@@ -42,7 +42,7 @@
 			</view>
 		</view>
 		<view class="text-center">
-			<button type="default" class="cu-btn bg-brown color-fff">新增地址</button>
+			<button type="default" class="cu-btn bg-brown color-fff" @click="addAddressFn">新增地址</button>
 		</view>
 	</view>
 </template>
@@ -71,6 +71,12 @@
 			// 选中地址处理函数
 			handleCheckAddress(index){
 				this.$store.dispatch('address/addressCheck',index)
+			},
+			// 跳转到新增地址页面
+			addAddressFn(){
+				uni.navigateTo({
+					url:'/pages/address/address-detail'
+				})
 			}
 		}
 	}

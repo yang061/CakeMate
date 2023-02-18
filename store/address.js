@@ -1,3 +1,4 @@
+import {$post} from '@/utils/request.js'
 export default {
 	namespaced:true,
 	state(){
@@ -38,6 +39,10 @@ export default {
 			state.checkedIndex = value
 			console.log(value);
 		},
+		// 把地址加入到数据库中
+		addAddressMut(state,addressObj){
+			state.addressList.push(addressObj)
+		}
 	},
 	actions:{
 		// 设为默认地址
@@ -59,6 +64,21 @@ export default {
 				delta:1
 			})
 			
+		},
+		addAddressAct({commit},addressObj){
+			$post('/classes/address',addressObj).then(res=>{
+				// console.log(res);
+				let {objectId} = res
+				// 把新地址的id追加到对象里面
+				commit('addAddressMut',{
+					...addressObj,
+					objectId
+				})
+				// 返回上一页
+				uni.navigateBack({
+					delta:1
+				})
+			})
 		}
 	},
 	getters:{
