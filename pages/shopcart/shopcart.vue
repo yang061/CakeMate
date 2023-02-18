@@ -95,7 +95,7 @@
 					共计:{{sumPrice}}
 				</view>
 			</view>
-			<view class="bg-yellow padding text-center color-fff">
+			<view class="bg-yellow padding text-center color-fff" @click="goOrderFn">
 				立即结算
 			</view>
 		</view>
@@ -112,9 +112,9 @@
 		data() {
 			return {
 				// 控制遮罩层显示和隐藏
-				show: true,
+				show: false,
 				// 遮罩层的下拉框显示与隐藏
-				dropShow: true,
+				dropShow: false,
 				// 购物车索引号,主商品序号
 				cartIndex: 0,
 				// 子商品序号
@@ -125,7 +125,8 @@
 		},
 		computed: {
 			...mapState({
-				cartList: state => state.cart.cartList
+				cartList: state => state.cart.cartList,
+				userInfo: state=> state.user.userInfo
 			}),
 			...mapGetters({
 				isAllChecked:'cart/isAllChecked',
@@ -139,7 +140,32 @@
 			
 		},
 		onLoad() {
-			console.log(this.checkedCartInfo)
+			// 验证是否登录
+			if(this.userInfo){
+				return
+			}
+			console.log(this.userInfo);
+			// 判断用户是否登录
+			uni.showModal({
+				title:'温馨提示',
+				content:'您需要先登录才能进行您的操作',
+				cancelText:'稍后再说',
+				confirmText:'立即登录',
+				success: ({cancel}) => {
+					// 用户选择取消登录
+					if(cancel){
+						uni.navigateBack({
+							// 返回之前的页面
+							delta:1,
+						})
+						return
+					}
+					// 用户选择登录
+					uni.navigateTo({
+						url:'/pages/login/login'
+					})
+				}
+			})
 		},
 		methods: {
 			// 修改单选按钮状态
@@ -171,6 +197,12 @@
 			},
 			changeNum({value}){
 				this.num =value
+			},
+			// 跳转订单页
+			goOrderFn(){
+				uni.navigateTo({
+					url:'/pages/order/order'
+				})
 			}
 		}
 	}
@@ -210,9 +242,6 @@
 					margin: 15rpx;
 					line-height: 150rpx;
 				}
-
-
-
 			}
 
 			.skuInfo {
