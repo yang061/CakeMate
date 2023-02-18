@@ -55,9 +55,9 @@ export default {
 		// 勾选新地址
 		addressCheck({commit},index){
 			commit('addressCheckMut',index)
-			// uni.navigateBack({
-			// 	delta:1
-			// })
+			uni.navigateBack({
+				delta:1
+			})
 			
 		}
 	},
