@@ -30,13 +30,14 @@
 			<image src="../../static/img/french.jpg" mode="" class="classify"></image>
 			<!-- 商品图片 -->
 			<view class="flex justify-between flex-wrap padding-sm">
-				<goodItem v-for="item in 4"></goodItem>
+				<goodItem v-for="item in goods" :good="item"></goodItem>
 			</view>
 			<!-- 返回顶部 -->
 			<view class="goTop" v-if="isShow" @click="handleGoTop">
 				<text class="iconfont icon-tubiao_fanhuidingbu"></text>
 			</view>
 		</view>
+		<tab-custom></tab-custom>
 	</scroll-view>
 </template>
 
@@ -49,7 +50,8 @@
 				// 返回顶部的标记点
 				topItem:'',
 				// 存储banner数据
-				banner:[]
+				banner:[],
+				goods:[]
 			};
 		},
 		methods:{
@@ -98,6 +100,10 @@
 			// 获取banner
 			this.$get('/classes/banner').then((res)=>{			
 				this.banner = res.results;
+			}),
+			this.$get('/classes/goods?limit=8').then(res=>{
+				// console.log(res);
+				this.goods = res.results
 			})
 		},
 	}
