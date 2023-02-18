@@ -13,9 +13,12 @@
 			// 从本地存储里获取用户信息
 			try{
 				const value = uni.getStorageSync('USERINFO')
+				// 登录过
 				if(value){
 					// 本地存储里有值，就存取到vuex里
 					this.$store.commit('user/initUserInfo',value)
+					// 触发地址初始化
+					this.$store.dispatch('address/initAddressAct',value.objectId)
 				}
 			}catch(e){
 				console.log('failed');

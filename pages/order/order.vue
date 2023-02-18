@@ -2,7 +2,7 @@
 	<!-- 订单页面 -->
 	<view>
 		<view @click="handleAddress" class="padding flex justify-between">
-			<view class="">
+			<view class=""  v-if="orderAddress">
 				{{orderAddress.username}}，{{orderAddress.phone}}
 				<view class="">
 					{{orderAddress.city}} 
@@ -10,6 +10,10 @@
 					{{orderAddress.detail}}
 				</view>
 			</view>
+			<view class="" v-else>
+				请选择地址
+			</view>
+			
 			<text class="cuIcon-right"></text>
 		</view>
 		<view class="padding">

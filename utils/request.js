@@ -32,3 +32,11 @@ export const $get =function(url,data={}){
 export const $post =function(url,data={}){
 	return $http(url,'post',data)
 }
+// 封装的put请求方法
+export const $put =function(url,data={}){
+	return $http(url,'put',data)
+}
+// 封装的delete请求方法
+export const $delete =function(url,data={}){
+	return $http(url,'delete',data)
+}

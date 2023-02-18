@@ -1,4 +1,4 @@
-import {$post} from '@/utils/request.js'
+import {$post,$get} from '@/utils/request.js'
 export default {
 	namespaced:true,
 	state(){
@@ -6,30 +6,30 @@ export default {
 			// 记录用户勾选的地址索引
 			checkedIndex:-1,
 			addressList:[
-				{
-					username:'张1',
-					phone:'158888888',
-					city:'成都',
-					region:'青羊区',
-					detail:'青羊街道',
-					isDefault:true
-				},
-				{
-					username:'张2',
-					phone:'158888888',
-					city:'成都',
-					region:'成华区',
-					detail:'成华大道',
-					isDefault:false
-				},
-				{
-					username:'张3',
-					phone:'158888888',
-					city:'成都',
-					region:'成华3区',
-					detail:'成华大道',
-					isDefault:false
-				},
+				// {
+				// 	username:'张1',
+				// 	phone:'158888888',
+				// 	ci11111ty:'成都',
+				// 	region:'青羊区',
+				// 	detail:'青羊街道',
+				// 	isDefault:true
+				// },
+				// {
+				// 	username:'张2',
+				// 	phone:'158888888',
+				// 	city:'成都',
+				// 	region:'成华区',
+				// 	detail:'成华大道',
+				// 	isDefault:false
+				// },
+				// {
+				// 	username:'张3',
+				// 	phone:'158888888',
+				// 	city:'成都',
+				// 	region:'成华3区',
+				// 	detail:'成华大道',
+				// 	isDefault:false
+				// },
 				
 			]
 		}
@@ -42,6 +42,10 @@ export default {
 		// 把地址加入到数据库中
 		addAddressMut(state,addressObj){
 			state.addressList.push(addressObj)
+		},
+		// 初始化地址数据
+		initAddressMut(state,addressArr){
+			state.addressList = addressArr
 		}
 	},
 	actions:{
@@ -78,6 +82,13 @@ export default {
 				uni.navigateBack({
 					delta:1
 				})
+			})
+		},
+		// 初始化地址数据
+		initAddressAct(context,userId){
+			let url = `/classes/address?where={"userId":"${userId}"}`
+			$get(url).then(({results})=>{
+				context.commit('initAddressMut',results)
 			})
 		}
 	},

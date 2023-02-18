@@ -60,13 +60,31 @@
 			...mapState({
 				addressList:state=>state.address.addressList,
 				// 被选中的索引号
-				checkedIndex:state=>state.address.checkedIndex
+				checkedIndex:state=>state.address.checkedIndex,
+				userInfo:state=>state.user.userInfo
 			}),
 		},
 		methods:{
 			// 设为默认==》点击事件
 			setDefaultFn(index){
-				this.$store.dispatch('address/setDefaultAddress',index)
+				// 发送异步请求
+				let obj ={"requests":[]}
+				this.addressList.forEach((item,i)=>{
+					// 当前索引等于传过来的索引号为真
+					let bool = i===index
+					obj.requests.push({
+						"method":"put",
+						"path":`/1.1/classes/address/${item.objectId}`,
+						"body":{
+							"isDefault":bool
+						}
+					})
+				})
+				// 批量操作在线存储
+				this.$post('/batch',obj).then(res=>{
+					this.$store.dispatch('address/setDefaultAddress',index)
+				})
+				
 			},
 			// 选中地址处理函数
 			handleCheckAddress(index){
