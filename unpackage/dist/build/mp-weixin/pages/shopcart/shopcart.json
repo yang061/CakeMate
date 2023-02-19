@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "nav-custom": "/components/navCustom/navCustom",
+    "u-overlay": "/node-modules/uview-ui/components/u-overlay/u-overlay",
+    "u-number-box": "/node-modules/uview-ui/components/u-number-box/u-number-box"
+  }
+}

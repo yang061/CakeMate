@@ -76,6 +76,7 @@
 			};
 		},
 		onLoad() {
+			console.log(this.cfyList);
 			// 法1：
 			// // 只加载蛋糕的数据(where={"bcid":1}),且每次只加载8条(limit=8)
 			// let url =`/classes/goods?where={"bcid":1}&limit=8&skip=0`
@@ -193,7 +194,9 @@
 			},
 			
 			// 口味筛选，场景筛选点击事件
-			handleList({bid,tid},type){
+			handleList(scene,type){
+				let {bid,tid} =scene
+				console.log(scene);
 				let obj = {
 					bcid:bid
 				}

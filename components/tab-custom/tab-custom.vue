@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="tabBar">
-			<view class="flex align-center" v-for="(tab,index) in tabArr" :key="index" @click="handleTab(tab)">
+			<view class="flex align-center" v-for="(tab,index) in tabArr" :key="tab.bcid" @click="handleTab(tab)">
 				<text>
 					{{tab.name}}
 				</text>
@@ -12,7 +12,7 @@
 		<u-popup :show="show" mode="left" @close="handleClose">
 			<view class="left-mask">
 				<view @click="handleList(item,'dalei')" class="left-menu" v-for="(item,index) in cfyList"
-					:key="item.objectId">
+					:key="index">
 					{{item.bname}}
 					<!-- 第一项的时候才显示口味筛选和场景筛选 -->
 					<view class="subMenu1" v-if="index==0" @click="listShow = !listShow"
@@ -21,7 +21,7 @@
 					</view>
 					<!-- 3级子菜单,isLink显示右箭头 -->
 					<u-cell-group v-if="listShow">
-						<u-cell :title="subItem.tname" isLink v-for="(subItem,index) in item.list" :key="subItem.tid"
+						<u-cell :title="subItem.tname" isLink v-for="(subItem,index) in item.list" :key="index"
 							@click="handleList(subItem,'list')"></u-cell>
 					</u-cell-group>
 					<view class="subMenu2" v-if="index==0" @click="sceneShow = !sceneShow">
@@ -44,7 +44,7 @@
 			return {
 				tabArr: [{
 						name: "分类",
-						bcid: '',
+						bcid: '0',
 						target: ''
 					},
 					{
@@ -64,7 +64,7 @@
 					},
 					{
 						name: "购物车",
-						bcid: '',
+						bcid: '2',
 						target: '/pages/shopcart/shopcart'
 					},
 				],
@@ -109,7 +109,7 @@
 						url: target
 					})
 				}
-				if (!bcid && !target) {
+				if (bcid==0 && !target) {
 					// 没有bcid和target=== 分类按钮
 					// 点击后,显示遮罩层
 					this.show = true

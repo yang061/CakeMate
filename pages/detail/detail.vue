@@ -37,7 +37,7 @@
 			<button 
 			class="cu-btn bg-brown lg" 
 			type="default"
-			@click="cartAddFn({...detail,idx:tabIdx})"
+			@click="cartAddFn(detail,tabIdx)"
 			>
 			加入购物车
 			</button>
@@ -66,7 +66,8 @@
 		},
 		methods:{
 			// 加入购物车
-			cartAddFn(goodObj){
+			cartAddFn(detail,tabIdx){
+				let goodObj = {...detail,idx:tabIdx}
 				console.log(this.$store);
 				this.$store.commit('cart/cartAddMut',goodObj)
 			}

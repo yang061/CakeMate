@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "nav-custom": "/components/navCustom/navCustom",
+    "home-title": "/components/home-title/home-title",
+    "good-item": "/components/goodItem/goodItem",
+    "tab-custom": "/components/tab-custom/tab-custom"
+  }
+}

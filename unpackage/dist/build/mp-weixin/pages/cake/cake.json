@@ -1,0 +1,12 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "nav-custom": "/components/navCustom/navCustom",
+    "good-item": "/components/goodItem/goodItem",
+    "u-line": "/node-modules/uview-ui/components/u-line/u-line",
+    "u-popup": "/node-modules/uview-ui/components/u-popup/u-popup",
+    "u-cell-group": "/node-modules/uview-ui/components/u-cell-group/u-cell-group",
+    "u-cell": "/node-modules/uview-ui/components/u-cell/u-cell"
+  }
+}

@@ -41,16 +41,20 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* 快应用特有相关 */
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx0cc6696b985badd0",
         "setting" : {
             "urlCheck" : false
         },
@@ -76,6 +80,9 @@
                     "key" : "RRMBZ-C6PKQ-VIK5V-GSJAB-X3VAH-XOBFA"
                 }
             }
+        },
+        "router" : {
+            "base" : "./"
         }
     }
 }

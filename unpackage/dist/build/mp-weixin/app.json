@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/cake/cake",
+    "pages/bread/bread",
+    "pages/my/my",
+    "pages/home/banner-ad",
+    "pages/collect-data/collect-data",
+    "pages/login/login",
+    "pages/login/reg",
+    "pages/login/forget",
+    "pages/login/agreement",
+    "pages/detail/detail",
+    "pages/shopcart/shopcart",
+    "pages/order/order",
+    "pages/address/address",
+    "pages/address/address-detail"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#f1f1f1",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {}
+}
