@@ -3,7 +3,7 @@
 		<u-navbar  title="MCAKE" :safeAreaInsetTop="false" class="title">
 			<view class="u-nav-slot" slot="left">
 				<u-icon name="map-fill" size="40" class="color-aaa"></u-icon>
-				<text class="address">重庆</text>
+				<text class="address">四川</text>
 			</view>
 			<view class="u-nav-slot" slot="right">
 				<u-icon name="search" size="40"></u-icon>

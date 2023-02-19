@@ -1,6 +1,5 @@
 <template>
   <view>
-	  <navCustom></navCustom>
     <web-view :webview-styles="webviewStyles" :src="articleurl"></web-view>
   </view>
 </template>
@@ -18,7 +17,7 @@
       };
     },
     onLoad(options) {
-      this.articleurl = 'http://www.baidu.com/';
+      this.articleurl = "";
     }
   }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <view class="content">
-	<navCustom></navCustom>
+	<u-navbar title="注册用户" :autoBack="true" fixed>
+		</u-navbar>
     <view class="header">
       <image src="../../static/shilu-login/logo.png"></image>
     </view>
@@ -48,21 +49,8 @@
         showPassword: false,
       };
     },
-    computed: {
-      yanzhengma() {
-        if (this.second == 0) {
-          return '获取验证码';
-        } else {
-          if (this.second < 10) {
-            return '重新获取0' + this.second;
-          } else {
-            return '重新获取' + this.second;
-          }
-        }
-      }
-    },
     onUnload() {
-      this.clear()
+      // this.clear()
     },
     methods: {
       display() {
@@ -106,6 +94,10 @@
 				  	title:'注册成功喽！！！',
 				  	icon:'success'
 				  })
+				  // 跳转到登录页
+				  uni.navigateTo({
+				  	url:"/pages/login/login"
+				  })
 			  }else{
 				  uni.showToast({
 				  	title:'用户名被占用了！！！',
@@ -115,12 +107,15 @@
 		  })
         
 
-      }
+      },
     }
   }
 </script>
 
 <style>
+	page{
+		background-color: #fff;
+	}
   .content {
     display: flex;
     flex-direction: column;

@@ -80,7 +80,6 @@
 				value.userId = this.userInfo.objectId
 				// 加入地址
 				this.$store.dispatch('address/addAddressAct',value)
-				console.log(value);
 			},
 			
 		}

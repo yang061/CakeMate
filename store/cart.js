@@ -3,6 +3,7 @@ export default {
 	namespaced:true,
 	state() {
 		return {
+			orderCartList:[],
 			cartList: [{
 					id: "10090",
 					twoId: 10089,
@@ -55,7 +56,7 @@ export default {
 					french: "Blanc Amant",
 					price: "218.00",
 					tid: 11,
-					ischeck: true,
+					ischeck: false,
 					num: 2, //商品数量
 					idx: 0, //标志选中的子商品信息
 					tname: "限定",
@@ -130,6 +131,23 @@ export default {
 			// Vue.set(goodObj,'idx',0)
 			state.cartList.push(goodObj)
 
+		},
+		saveOrderCartListMut(state,value){
+			state.orderCartList = value
+		},
+		
+	},
+	actions:{
+		// 把购物车的信息提交到订单里
+		saveOrderCartListAct({state,commit}){
+			let orderCartList = []
+			state.cartList.forEach(item=>{
+				if(item.ischeck){
+					orderCartList.push(item)
+				}
+			})
+			console.log(orderCartList);
+			commit('saveOrderCartListMut',orderCartList)
 		}
 	},
 	getters: {

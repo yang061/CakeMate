@@ -46,7 +46,7 @@
 							<view class="left">
 								{{cartList[cartIndex].name}}
 								<view class="margin-tb-xs">{{cartList[cartIndex].french}}</view>
-								￥{{checkedCartInfo.price}} 
+								￥{{checkedCartInfo.price}}
 							</view>
 						</view>
 					</view>
@@ -62,12 +62,8 @@
 								<text class="iconfont icon-xiala"></text>
 							</view>
 							<view class="drop-list bg-fff" v-if="dropShow">
-								<view 
-								class="padding-sm" 
-								v-for="(item,index) in cartList[cartIndex].list" 
-								:key="index"
-								@click="handleDropList(index)"
-								>
+								<view class="padding-sm" v-for="(item,index) in cartList[cartIndex].list" :key="index"
+									@click="handleDropList(index)">
 									{{item.spec}}--{{item.edible}}
 								</view>
 							</view>
@@ -118,90 +114,171 @@
 				// 购物车索引号,主商品序号
 				cartIndex: 0,
 				// 子商品序号
-				dropIndex:0,
+				dropIndex: 0,
 				// 当前弹窗商品数量
-				num:1,
+				num: 1,
+				// 存储选择的规格
+				specList: []
 			};
 		},
 		computed: {
 			...mapState({
 				cartList: state => state.cart.cartList,
-				userInfo: state=> state.user.userInfo
+				userInfo: state => state.user.userInfo
 			}),
 			...mapGetters({
-				isAllChecked:'cart/isAllChecked',
-				sumPrice:'cart/sumPrice',
+				isAllChecked: 'cart/isAllChecked',
+				sumPrice: 'cart/sumPrice',
 			}),
-			checkedCartInfo(){
+			checkedCartInfo() {
 				// 过滤选中后的商品信息,弹窗里面
-				let {cartIndex,cartList,dropIndex} =this
+				let {
+					cartIndex,
+					cartList,
+					dropIndex
+				} = this
 				return cartList[cartIndex].list[dropIndex]
 			}
-			
+
 		},
 		onLoad() {
 			// 验证是否登录
-			if(this.userInfo){
+			if (this.userInfo) {
 				return
 			}
 			console.log(this.userInfo);
+			// 存储规格信息
+			this.addSpecFn()
 			// 判断用户是否登录
 			uni.showModal({
-				title:'温馨提示',
-				content:'您需要先登录才能进行您的操作',
-				cancelText:'稍后再说',
-				confirmText:'立即登录',
-				success: ({cancel}) => {
+				title: '温馨提示',
+				content: '您需要先登录才能进行您的操作',
+				cancelText: '稍后再说',
+				confirmText: '立即登录',
+				success: ({
+					cancel
+				}) => {
 					// 用户选择取消登录
-					if(cancel){
+					if (cancel) {
 						uni.navigateBack({
 							// 返回之前的页面
-							delta:1,
+							delta: 1,
 						})
 						return
 					}
 					// 用户选择登录
 					uni.navigateTo({
-						url:'/pages/login/login'
+						url: '/pages/login/login'
 					})
 				}
 			})
 		},
 		methods: {
+			// 添加规格信息
+			addSpecFn() {
+				// 把当前商品的规格存储下来
+				let {
+					cartIndex,
+					cartList,
+					dropIndex
+				} = this
+				// 存储更新的spec,第一次一定存储【存储被选中的】
+				if (!this.specList.length) {
+					if (cartList[cartIndex].ischeck) {
+						this.specList.push({
+							// 商品id
+							id: cartList[cartIndex].id,
+							// 规格
+							spec: cartList[cartIndex].list[dropIndex].spec
+						});
+					}
+
+				}
+
+				// 如果spec里面存在相同的id，则进行替换
+				this.specList.forEach((item, index) => {
+					if (cartList[cartIndex].id == item.id) {
+						// 修改当前id的规格
+						item.spec = cartList[cartIndex].list[dropIndex].spec
+					}
+				})
+			},
 			// 修改单选按钮状态
 			changeChecked(index) {
+				let {
+					cartIndex,
+					cartList,
+					dropIndex
+				} = this
 				this.$store.commit('cart/cartCheckMut', index)
+				if (this.cartList[index].ischeck) {
+					// 如果购物车状态被选中了，才执行追加
+					this.specList.push({
+						// 商品id
+						id: cartList[index].id,
+						// 规格
+						spec: cartList[index].list[dropIndex].spec,
+					});
+				} else {
+					for(let i = 0 ;i<this.specList.length ;i++){
+						if(this.specList[i].id == cartList[index].id){
+							this.specList.splice(i, 1)
+						}
+					}
+					
+					
+				}
 			},
 			// 修改全选按钮状态
 			changeAllChecked(bool) {
 				this.$store.commit('cart/cartAllCheckMut', bool)
 			},
 			// 修改编辑信息，控制显示与隐藏
-			handleEdit(idx,num) {
+			handleEdit(idx, num) {
 				// 把下拉下标改为vuex中的idx，相当于重置
 				this.dropIndex = this.cartList[idx].idx
 				this.cartIndex = idx
 				this.show = true
 			},
 			// 子列表下拉点击行为
-			handleDropList(dropIdx){
+			handleDropList(dropIdx) {
 				this.dropShow = false
 				this.dropIndex = dropIdx
+
 			},
-			handleOk(){
+			handleOk() {
 				// 关闭遮罩层
 				this.show = false
-				let {cartIndex,dropIndex,num} = this
-				console.log(cartIndex,dropIndex,num);
-				this.$store.commit('cart/cartListCheckMut',{cartIndex,dropIndex,num})
+				let {
+					cartIndex,
+					dropIndex,
+					num,
+					cartList
+				} = this
+				this.$store.commit('cart/cartListCheckMut', {
+					cartIndex,
+					dropIndex,
+					num
+				})
+				if(cartList[cartIndex].ischeck){
+					this.addSpecFn()
+				}
+
 			},
-			changeNum({value}){
-				this.num =value
+			changeNum({
+				value
+			}) {
+				this.num = value
 			},
 			// 跳转订单页
-			goOrderFn(){
+			goOrderFn() {
+				// console.log(encodeURIComponent(JSON.stringify(this.specList)));
+				// let spec = encodeURIComponent(JSON.stringify(this.specList))
+				// 把订单信息存取到vuex
+				this.$store.dispatch('cart/saveOrderCartListAct')
 				uni.navigateTo({
-					url:'/pages/order/order'
+					url: `/pages/order/order`,
+
 				})
 			}
 		}
@@ -209,9 +286,10 @@
 </script>
 
 <style lang="scss">
-	page{
+	page {
 		background-color: #fff;
 	}
+
 	.skuImg {
 		width: 180rpx;
 		height: 180rpx;

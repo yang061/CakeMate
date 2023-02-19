@@ -47,9 +47,9 @@ export default {
 		initAddressMut(state,addressArr){
 			state.addressList = addressArr
 		},
-		deleteAddressMut(state,index){
-			console.log(state.addressList);
-		}
+		// deleteAddressMut(state,index){
+		// 	// console.log(state.addressList);
+		// }
 	},
 	actions:{
 		// 设为默认地址
@@ -92,7 +92,6 @@ export default {
 			let url = `/classes/address?where={"userId":"${userId}"}`
 			$get(url).then(({results})=>{
 				context.commit('initAddressMut',results)
-				console.log(results);
 			})
 		},
 		// 删除地址
